@@ -4,6 +4,7 @@
         "user": "username",
         "pass": "password",
         "server": "wss://ctzn.one",
-        "delay": 2000
+        "delay": 2000,
+        "debug": true
   }
 }
