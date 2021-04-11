@@ -23,7 +23,8 @@ postSelf(title string, body string, blob string)
 postCommunity(title string, body string, blob string)
 pushBlob(base64 string)
 getNotification(cb function)
-getNotifications(count int);
+getNotifications(limit int)
+getPosts(userId string, limit int)
 ```
 
 ### Contact
