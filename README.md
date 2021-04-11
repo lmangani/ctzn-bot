@@ -8,3 +8,15 @@ Nothing to see here. Meow on.
 
 ### Usage
 Configure your CTZN settings in `config.json` and hack with `example.js`
+
+#### Exports
+```
+connect(cb)
+disconnect()
+login()
+postSelf(title,body,blob)
+postCommunity(title,body,blob)
+pushBlob(base64)
+getNotification()
+getNotifications(int);
+```
