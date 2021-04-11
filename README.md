@@ -7,4 +7,4 @@ Simple bot for CTZN
 Nothing to see here. Meow on.
 
 ### Usage
-Configure your CTZN settings in `config.json`
+Configure your CTZN settings in `config.json` and hack with `example.js`
