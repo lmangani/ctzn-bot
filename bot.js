@@ -8,11 +8,28 @@ const WebSocket = require('rpc-websockets').Client
 const fetch = require('node-fetch');
 const config = require( './config.json' );
 
-/* main */
+/* main example */
+/*
+
+const bot = require('./bot.js');
+const main = async function(config){
+   try {
+       const userInfo = await bot.login(config);
+       await bot.post('Bot Online at '+new Date().toISOString(),'');
+       bot.getNotification(notify);
+   }catch (e){
+       console.log(e);
+       ws.close();
+       process.exit();
+   }
+};
+
+*/
 
 function connect() {
   var ws = new WebSocket(config.ctzn.server);
   ws.on('open', async function() {
+          cb(config);
           main(config);
   })
   ws.onclose = function(e) {
@@ -27,21 +44,10 @@ function connect() {
   };
 }
 
-const main = async function(config){
-   try {
-       const userInfo = await login(config);
-       await post('Bot Online at '+new Date().toISOString(),'');
-       getNotification(notify);
-   }catch (e){
-       console.log(e);
-       ws.close();
-       process.exit();
-   }
-};
-
-/* connect and loop */
-
-connect();
+function disconnect() {
+      ws.close();
+      ws = false;
+}
 
 /* Functions */
 
@@ -134,3 +140,15 @@ const imageFetch = async function(url){
 Array.prototype.forEachAsync = async function (fn) {
     for (let t of this) { await fn(t) }
 }
+
+
+/* Exports */
+
+exports.connect = connect;
+exports.disconnect = disconnect;
+exports.login = login;
+exports.postSelf = post;
+exports.postCommunity = postCommunity;
+exports.pushBlob = pushBlob;
+exports.getNotification = getNotification;
+exports.getNotifications = getNotifications;
