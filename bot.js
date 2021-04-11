@@ -26,11 +26,12 @@ const main = async function(config){
 
 */
 
-function connect() {
-  var ws = new WebSocket(config.ctzn.server);
+var ws;
+function connect(cb) {
+  if (!cb) return;
+  ws = new WebSocket(config.ctzn.server);
   ws.on('open', async function() {
           cb(config);
-          main(config);
   })
   ws.onclose = function(e) {
       console.log('Socket is closed. Reconnect will be attempted in 1 second.', e.reason);
