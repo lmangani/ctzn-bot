@@ -11,12 +11,12 @@ Configure your CTZN settings in `config.json` and hack with `example.js`
 
 #### Exports
 ```
-connect(cb)
+connect(cb function)
 disconnect()
-login()
-postSelf(title,body,blob)
-postCommunity(title,body,blob)
-pushBlob(base64)
+login(config json)
+postSelf(title string, body string, blob string)
+postCommunity(title string, body string, blob string)
+pushBlob(base64 string)
 getNotification()
-getNotifications(int);
+getNotifications(count int);
 ```
