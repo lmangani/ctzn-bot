@@ -7,25 +7,9 @@
 const WebSocket = require('rpc-websockets').Client
 const fetch = require('node-fetch');
 const config = require( './config.json' );
+const debug = config.ctzn.debug || true;
 
-/* main example */
-/*
-
-const bot = require('./bot.js');
-const main = async function(config){
-   try {
-       const userInfo = await bot.login(config);
-       await bot.post('Bot Online at '+new Date().toISOString(),'');
-       bot.getNotification(notify);
-   }catch (e){
-       console.log(e);
-       ws.close();
-       process.exit();
-   }
-};
-
-*/
-
+/* Websocket Handler */
 var ws;
 function connect(cb) {
   if (!cb) return;
@@ -45,20 +29,21 @@ function connect(cb) {
   };
 }
 
-function disconnect() {
+function disconnect(cb) {
       ws.close();
       ws = false;
 }
 
-/* Functions */
+/* Helper Functions */
 
 const notify = async function(log){
-  console.log('fresh notification!',log);
+  if (debug) console.log('fresh notification!',log);
   var data = await getNotifications(log.count);
-  console.log('update',data);
+  if (debug) console.log('updates',data);
   await post('Bot Notified at '+new Date().toISOString(),JSON.stringify(data.notifications[0].author));
 }
 
+// Pull notification counter
 const getNotification = async function(cb){
   await ws.call('view.get', ["ctzn.network/notifications-count-view",{"after":new Date().toISOString() }]).then(function(result) {
         if(result && result.count > 0) cb(result);
@@ -69,6 +54,7 @@ const getNotification = async function(cb){
   })
 }
 
+// Fetch the latest notifications based on limit
 const getNotifications = async function(limit){
   var res = await ws.call('view.get', ["ctzn.network/notifications-view",{"limit":limit }]).then(function(result) {
     return result;
@@ -78,10 +64,10 @@ const getNotifications = async function(limit){
   return res;
 }
 
-
+// Login using ctzn account
 const login = async function(){
   var res = await ws.call('accounts.login', [{"username":config.ctzn.user,"password":config.ctzn.pass}]).then(function(result) {
-    console.log('accounts.login succeeded',result);
+    if (debug) console.log('accounts.login succeeded',result);
     return result;
   }).catch(function(error) {
     console.log('auth failed', error)
@@ -91,12 +77,13 @@ const login = async function(){
   return res;
 }
 
+// Post to Self (timeline)
 const post = async function(text,body,blob){
     var rand = Math.random().toString(36).substring(7);
     var post = [config.ctzn.uri,"ctzn.network/post",{"text":text || rand,"extendedText": body || rand, "extendedTextMimeType":"text/html" }];
     if(blob) post[2].media = [{"caption":"caption","blobs":{"original":{"blobName":blob,"mimeType":"image/png"}}}]
     var res = await ws.call('table.create', post).then(function(result) {
-            console.log('post succeeded', result)
+            if (debug) console.log('post succeeded', result)
             return result;
     }).catch(function(error) {
             console.log('post failed', error)
@@ -105,12 +92,13 @@ const post = async function(text,body,blob){
     return res;
 }
 
+// Post to a Community (WIP)
 const postCommunity = async function(text,body,blob){
     var rand = Math.random().toString(36).substring(7);
     var post = [config.ctzn.uri,"ctzn.network/post",{"text":text || rand,"extendedText": body || rand, "extendedTextMimeType":"text/html", "community":{"userId":"memes@ctzn.one","dbUrl":"hyper://0a4968b19d692f472dd39b74b8663d2400dc34e33ca897e3a259c3525ae8168a/"} }];
     if(blob) post[2].media = [{"caption":"caption","blobs":{"original":{"blobName":blob,"mimeType":"image/png"}}}]
     await ws.call('table.create', post).then(function(result) {
-            console.log('post succeeded', result)
+            if (debug) console.log('post succeeded', result)
             return result;
     }).catch(function(error) {
             console.log('post failed', error)
@@ -118,11 +106,12 @@ const postCommunity = async function(text,body,blob){
     })
 }
 
+// Upload Images w/ mimeType, returns Blob ID for posts
 const pushBlob = async function(data, type){
     if (!type) type = {"mimeType":"image/png"}
     const blob = [data, type];
     var result = await ws.call('blob.create', blob).then(function(result) {
-            console.log('blob succeeded', result)
+            if (debug) console.log('blob succeeded', result)
             return result.name;
     }).catch(function(error) {
             console.log('blob failed', error)
@@ -143,7 +132,7 @@ Array.prototype.forEachAsync = async function (fn) {
 }
 
 
-/* Exports */
+/* Helper Exports */
 
 exports.connect = connect;
 exports.disconnect = disconnect;
@@ -153,3 +142,4 @@ exports.postCommunity = postCommunity;
 exports.pushBlob = pushBlob;
 exports.getNotification = getNotification;
 exports.getNotifications = getNotifications;
+exports.imageFetch = imageFetch;
