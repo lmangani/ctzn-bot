@@ -7,6 +7,11 @@ Simple bot for [CTZN](https://ctznry.com)
 * Nothing to see here. Meow on.
 
 ### Usage
+```
+npm install ctzn-bot
+```
+
+### Hack
 Configure your CTZN settings in `config.json` and hack with `example.js`
 
 #### Exports
