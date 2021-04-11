@@ -17,6 +17,6 @@ login(config json)
 postSelf(title string, body string, blob string)
 postCommunity(title string, body string, blob string)
 pushBlob(base64 string)
-getNotification()
+getNotification(cb function)
 getNotifications(count int);
 ```
