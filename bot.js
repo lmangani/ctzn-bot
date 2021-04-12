@@ -186,6 +186,32 @@ const postCommunity = async function(text, body, blob) {
     });
 };
 
+// Post to a Comment (WIP)
+const postComment = async function(text, root) {
+  if(!root && !root.dbUrl) return;
+  var post = [
+    config.ctzn.uri,
+    "ctzn.network/comment",
+    {
+      text: text,
+      reply: {
+	root: root // { dbUrl, authorId }
+      },
+      createdAt:  new Date().toISOString()
+    }
+  ];
+  await ws
+    .call("table.create", post)
+    .then(function(result) {
+      if (debug) console.log("comment succeeded", result);
+      return result;
+    })
+    .catch(function(error) {
+      console.log("comment failed", error);
+      return false;
+    });
+};
+
 // Upload Images w/ mimeType, returns Blob ID for posts
 const pushBlob = async function(data, type) {
   if (!type) type = { mimeType: "image/png" };
@@ -202,6 +228,8 @@ const pushBlob = async function(data, type) {
     });
   return result;
 };
+
+
 
 const imageFetch = async function(url) {
   const response = await fetch(url);
