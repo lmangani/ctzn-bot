@@ -231,6 +231,21 @@ const pushBlob = async function(data, type) {
 
 
 
+// List Communities
+const getCommunities = async function(){
+  var result = await ws
+  .call("server.listCommunities", [])
+  .then(function(result) {
+      if (debug) console.log("list succeeded", result);
+      return result;
+  })
+  .catch(function(error) {
+      console.log("list failed", error);
+      return false;
+    });
+  return result;
+}
+
 const imageFetch = async function(url) {
   const response = await fetch(url);
   const data = await response.buffer();
@@ -254,5 +269,6 @@ exports.postCommunity = postCommunity;
 exports.pushBlob = pushBlob;
 exports.getNotification = getNotification;
 exports.getNotifications = getNotifications;
+exports.getCommunities = getCommunities;
 exports.getPosts = getPosts;
 exports.imageFetch = imageFetch;
