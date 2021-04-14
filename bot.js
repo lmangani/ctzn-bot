@@ -246,6 +246,21 @@ const getCommunities = async function(){
   return result;
 }
 
+// List Users
+const getAccounts = async function(){
+  var result = await ws
+  .call("server.listAccounts", [])
+  .then(function(result) {
+      if (debug) console.log("list succeeded", result);
+      return result;
+  })
+  .catch(function(error) {
+      console.log("list failed", error);
+      return false;
+    });
+  return result;
+}
+
 const imageFetch = async function(url) {
   const response = await fetch(url);
   const data = await response.buffer();
@@ -270,5 +285,6 @@ exports.pushBlob = pushBlob;
 exports.getNotification = getNotification;
 exports.getNotifications = getNotifications;
 exports.getCommunities = getCommunities;
+exports.getAccounts = getAccounts;
 exports.getPosts = getPosts;
 exports.imageFetch = imageFetch;

@@ -1,6 +1,6 @@
 {
   "name": "ctzn-bot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CTZN Bot",
   "main": "bot.js",
   "scripts": {

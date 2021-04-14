@@ -18,17 +18,22 @@ Configure your CTZN settings in `config.json` and hack with `example.js`
 ```
 const bot = require('ctzn-bot');
 
+// Session
 bot.connect(cb function)
 bot.disconnect()
 bot.login(config json)
+// Posts
 bot.postSelf(title string, body string, blob string)
 bot.postCommunity(title string, body string, blob string)
 bot.postComment(text string, root obj)
 bot.pushBlob(base64 string)
-bot.getCommunities()
+bot.getPosts(userId string, limit int)
+// Notifications
 bot.getNotification(cb function)
 bot.getNotifications(limit int)
-bot.getPosts(userId string, limit int)
+// Lists
+bot.getCommunities()
+bot.getAccounts()
 ```
 
 ### Contact
