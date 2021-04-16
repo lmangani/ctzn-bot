@@ -261,6 +261,20 @@ const getAccounts = async function(){
   return result;
 }
 
+const apiCall = async function(params, data){
+  var result = await ws
+  .call(params, data)
+  .then(function(result){
+      if (debug) console.log("list succeeded", result);
+      return result;
+   }).catch(function(error) {
+      console.log("list failed", error);
+      return false;
+   });
+   return result;
+}
+
+
 const imageFetch = async function(url) {
   const response = await fetch(url);
   const data = await response.buffer();
@@ -288,3 +302,4 @@ exports.getCommunities = getCommunities;
 exports.getAccounts = getAccounts;
 exports.getPosts = getPosts;
 exports.imageFetch = imageFetch;
+exports.apiCall = apiCall;

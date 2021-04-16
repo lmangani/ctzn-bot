@@ -1,6 +1,6 @@
 {
   "name": "ctzn-bot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CTZN Bot",
   "main": "bot.js",
   "scripts": {
@@ -12,6 +12,7 @@
   "author": "lorenzo.mangani@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "base64-string": "^1.1.2",
     "node-fetch": "^2.6.1",
     "rpc-websockets": "^7.4.11"
   }
